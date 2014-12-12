@@ -8,10 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import kafka.message.Message;
-
 import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData.Record;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.IndexedRecord;
 import org.apache.avro.io.BinaryEncoder;
@@ -28,10 +25,11 @@ import com.linkedin.camus.schemaregistry.SchemaRegistry;
 import com.linkedin.camus.schemaregistry.SchemaRegistryException;
 
 public class KafkaAvroMessageEncoder extends MessageEncoder<IndexedRecord, byte[]> {
+
     public static final String KAFKA_MESSAGE_CODER_SCHEMA_REGISTRY_CLASS = "kafka.message.coder.schema.registry.class";
 
     private static final byte MAGIC_BYTE = 0x0;
-    private static final Logger logger = Logger.getLogger(KafkaAvroMessageEncoder.class);
+    private static final Logger log = Logger.getLogger(KafkaAvroMessageEncoder.class);
 
     private SchemaRegistry<Schema> client;
     private final Map<Schema, String> cache = Collections
@@ -54,7 +52,6 @@ public class KafkaAvroMessageEncoder extends MessageEncoder<IndexedRecord, byte[
         } catch (Exception e) {
             throw new MessageEncoderException(e);
         }
-
     }
 
     public byte[] toBytes(IndexedRecord record) {
@@ -83,13 +80,14 @@ public class KafkaAvroMessageEncoder extends MessageEncoder<IndexedRecord, byte[
             BinaryEncoder encoder = encoderFactory.directBinaryEncoder(out, null);
             DatumWriter<IndexedRecord> writer;
 
-            if (record instanceof SpecificRecord)
+            if (record instanceof SpecificRecord) {
                 writer = new SpecificDatumWriter<IndexedRecord>(record.getSchema());
-            else
+            } else {
                 writer = new GenericDatumWriter<IndexedRecord>(record.getSchema());
+            }
             writer.write(record, encoder);
 
-            System.err.println(out.toByteArray().length);
+            log.error(out.toByteArray().length);
             return out.toByteArray();
             //return new Message(out.toByteArray());
         } catch (IOException e) {

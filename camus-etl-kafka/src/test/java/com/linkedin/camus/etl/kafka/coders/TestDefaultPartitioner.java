@@ -24,7 +24,7 @@ public class TestDefaultPartitioner {
         testPartitioner.setConf(testConfiguration);
 
         String actualResult = testPartitioner.generatePartitionedPath(testJob, "testTopic", "1406777693000");
-        String expectedResult = "testTopic/hourly/2014/07/30/20";
+        String expectedResult = "testTopic/hourly/2014/07/31/05";
         
         assertTrue(actualResult.equals(expectedResult));
         

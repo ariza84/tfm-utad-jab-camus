@@ -8,7 +8,6 @@ import com.linkedin.camus.etl.kafka.mapred.EtlMultiOutputFormat;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.apache.avro.file.CodecFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -21,7 +20,6 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.ReflectionUtils;
-import org.apache.log4j.Logger;
 
 
 /**
@@ -101,26 +99,6 @@ public class StringRecordWriterProvider implements RecordWriterProvider {
             FSDataOutputStream fileOut = fs.create(path, false);
             return new ByteRecordWriter(new DataOutputStream(codec.createOutputStream(fileOut)), recordDelimiter);
         }
-
-        /*
-        // Create a FSDataOutputStream stream that will write to path.
-        final FSDataOutputStream writer = path.getFileSystem(context.getConfiguration()).create(path);
-
-        // Return a new anonymous RecordWriter that uses the
-        // FSDataOutputStream writer to write bytes straight into path.
-        return new RecordWriter<IEtlKey, CamusWrapper>() {
-            @Override
-            public void write(IEtlKey ignore, CamusWrapper data) throws IOException {
-                String record = (String)data.getRecord() + recordDelimiter;
-                writer.write(record.getBytes());
-            }
-
-            @Override
-            public void close(TaskAttemptContext context) throws IOException, InterruptedException {
-                writer.close();
-            }
-        };
-        */
     }
     
     protected static class ByteRecordWriter extends RecordWriter<IEtlKey, CamusWrapper> {

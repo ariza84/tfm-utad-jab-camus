@@ -13,7 +13,7 @@ public class DateUtils {
     
     public DateUtils(Properties props)
     {
-      zone = DateTimeZone.forID(props.getProperty("camus.default.timezone", "America/Los_Angeles"));
+      zone = DateTimeZone.forID(props.getProperty("camus.default.timezone", "Europe/Madrid"));
       minuteFormatter = getDateTimeFormatter("YYYY-MM-dd-HH-mm");
     }
     

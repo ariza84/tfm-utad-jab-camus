@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.apache.avro.Schema;
 import org.apache.avro.repo.InMemoryRepository;
 import org.apache.avro.repo.server.RepositoryServer;
-import org.apache.hadoop.conf.Configuration;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
